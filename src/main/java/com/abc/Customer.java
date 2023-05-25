@@ -62,6 +62,10 @@ public class Customer {
                 break;
         }
 
+        return sumTransaction(a, s);
+    }
+
+    private String sumTransaction(Account a, String s) {
         //Now total up all the transactions
         double total = 0.0;
         for (Transaction t : a.transactions) {
@@ -74,5 +78,16 @@ public class Customer {
 
     private String toDollars(double d){
         return String.format("$%,.2f", abs(d));
+    }
+
+    public double transferBetweenAccount(Account accountFrom, Account accountTo, Double amount){
+        if (accounts.contains(accountFrom) && accounts.contains(accountTo)) {
+                accountFrom.withdraw(amount);
+                accountTo.deposit(amount);   
+                return amount; 
+        }
+        else { 
+            throw new IllegalArgumentException("you can only transfer between your account");
+        }
     }
 }

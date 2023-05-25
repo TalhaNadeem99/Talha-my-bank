@@ -17,21 +17,30 @@ public class Account {
         this.transactions = new ArrayList<Transaction>();
     }
 
-    public void deposit(double amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("amount must be greater than zero");
-        } else {
-            transactions.add(new Transaction(amount));
+    public void deposit(double depositAmount) {
+       validate(depositAmount);
+        transactions.add(new Transaction(depositAmount));
+        
+    }
+
+    public void withdraw(double withdrawAmount) {
+        validate(withdrawAmount);
+        double balance = sumTransactions();
+        if ( withdrawAmount > balance ){
+                throw new IllegalArgumentException("Insufficient Balance");
+        } 
+        else {
+            transactions.add(new Transaction(-withdrawAmount));
         }
     }
 
-public void withdraw(double amount) {
-    if (amount <= 0) {
-        throw new IllegalArgumentException("amount must be greater than zero");
-    } else {
-        transactions.add(new Transaction(-amount));
+    // valildate the withdraw and deposit amount method
+    //if the withdraw and depost amount is <= than 0 throw IllegalArgumetException 
+    public void validate(double validateAmount){
+        if (validateAmount <= 0){
+            throw new IllegalArgumentException("Amount must be greater than zero");        
+        }
     }
-}
 
     public double interestEarned() {
         double amount = sumTransactions();
@@ -41,9 +50,6 @@ public void withdraw(double amount) {
                     return amount * 0.001;
                 else
                     return 1 + (amount-1000) * 0.002;
-//            case SUPER_SAVINGS:
-//                if (amount <= 4000)
-//                    return 20;
             case MAXI_SAVINGS:
                 if (amount <= 1000)
                     return amount * 0.02;
